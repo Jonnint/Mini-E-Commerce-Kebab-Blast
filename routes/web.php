@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
     Route::post('/keranjang', [CartController::class, 'store'])->name('cart.store');
+    Route::post('/keranjang/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::patch('/keranjang/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/keranjang/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
 });

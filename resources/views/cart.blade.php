@@ -140,14 +140,17 @@
                             </div>
                         </div>
                         
-                        <button class="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-2xl shadow-orange-500/50 hover:shadow-orange-500/70 transform hover:scale-105 font-semibold mb-4">
-                            <span class="flex items-center justify-center space-x-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                                </svg>
-                                <span>Checkout</span>
-                            </span>
-                        </button>
+                        <form action="{{ route('cart.checkout') }}" method="POST" onsubmit="return confirm('Yakin ingin checkout semua item?')">
+                            @csrf
+                            <button type="submit" class="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-2xl shadow-orange-500/50 hover:shadow-orange-500/70 transform hover:scale-105 font-semibold mb-4">
+                                <span class="flex items-center justify-center space-x-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                    </svg>
+                                    <span>Checkout</span>
+                                </span>
+                            </button>
+                        </form>
                         
                         <a href="{{ route('home') }}" class="block text-center text-gray-400 hover:text-orange-400 transition-colors duration-300">
                             <span class="flex items-center justify-center space-x-2">

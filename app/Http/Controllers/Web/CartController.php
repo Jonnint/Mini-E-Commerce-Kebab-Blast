@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CartController extends Controller
@@ -83,5 +84,33 @@ class CartController extends Controller
 
         $cartItem->delete();
         return back()->with('success', 'Berhasil menghapus item dari keranjang');
+    }
+
+    public function checkout(): RedirectResponse
+    {
+        $cartItems = auth()->user()->cartItems()->with('product')->get();
+
+        if ($cartItems->isEmpty()) {
+            return back()->with('error', 'Keranjang masih kosong');
+        }
+
+        // Cek stok semua item sebelum proses
+        foreach ($cartItems as $item) {
+            if ($item->product->stock < $item->quantity) {
+                return back()->with('error', "Stok {$item->product->name} tidak cukup (tersisa {$item->product->stock})");
+            }
+        }
+
+        DB::transaction(function () use ($cartItems) {
+            foreach ($cartItems as $item) {
+                // Kurangi stok produk
+                $item->product->decrement('stock', $item->quantity);
+            }
+
+            // Kosongkan cart user
+            auth()->user()->cartItems()->delete();
+        });
+
+        return redirect()->route('home')->with('success', 'Checkout berhasil! Pesanan Anda sedang diproses. 🎉');
     }
 }
